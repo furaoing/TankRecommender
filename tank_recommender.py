@@ -12,7 +12,7 @@ from py_utility.system import create_abs_path
 from config import RESULT_LOG_BaseName
 from config import CLUSTERS_LOG_BaseName
 from config import get_log_file_pth
-from config import times_to_update
+from config import UPDATE_TIME_POINT
 from config import FILE_WHITE_LIST
 import json
 import time
@@ -146,6 +146,6 @@ class HotNewsDiscoverAgent(object):
 
 
 if __name__ == "__main__":
-    agent = HotNewsDiscoverAgent(times_to_update, debug=False)
+    agent = HotNewsDiscoverAgent(UPDATE_TIME_POINT, debug=False)
     # TODO: Dubug the "debug" model implementation
     agent.run()

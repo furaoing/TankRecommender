@@ -9,21 +9,18 @@ import json
 import requests
 from py_utility import system
 import time
-from config import es_url
+from config import ES_URL
 from config import construct_query
-from config import es_tank_timeout
-from config import es_batch_size
+from config import ES_TANK_TIMEOUT
+from config import ES_BATCH_SIZE
 from config import ERROR
 
 
 def pull_news_from_tank(_start_index, _batch_size, bt, et):
     signal = None
-    url = es_url
+    url = ES_URL
     query = construct_query(bt, et, _start_index, _batch_size)
-    timer = system.RunningTimer()
-    r = requests.post(url, data=json.dumps(query), timeout=es_tank_timeout)
-
-    print(timer.end())
+    r = requests.post(url, data=json.dumps(query), timeout=ES_TANK_TIMEOUT)
     obj = json.loads(r.text)
     batch_size = len(obj["hits"]["hits"])
     if batch_size < _batch_size:
@@ -59,28 +56,6 @@ def pull_news_from_tank(_start_index, _batch_size, bt, et):
             news.append({"Url": item["_source"]["url"], "Title": title, "Content": text, "iG": ig})
     return signal, news
 
-"""
-def fetch_news_from_es(bt, et):
-    news = list()
-    start_index = 0
-    while True:
-        while True:
-            try:
-                signal, news_buffer = pull_news_from_tank(start_index, es_batch_size, bt, et)
-                break
-            except:
-                print("Time Out")
-                print("Try One More Time")
-            time.sleep(10)
-        time.sleep(1)
-        print("Batch Arrived")
-        news = news + news_buffer
-        if signal == -2:
-            break
-        start_index += es_batch_size
-    return news
-"""
-
 
 def fetch_news_from_es(bt, et):
     news = list()
@@ -93,7 +68,7 @@ def fetch_news_from_es(bt, et):
         for attempt in range(10):
             try:
                 signal, news_buffer = pull_news_from_tank(start_index,
-                                                          es_batch_size, bt, et)
+                                                          ES_BATCH_SIZE, bt, et)
             except:
                 print("Time Out")
                 print("Try One More Time")
@@ -125,7 +100,7 @@ def fetch_news_from_es(bt, et):
                 news = news + news_buffer
             else:
                 raise Exception
-            start_index += es_batch_size
+            start_index += ES_BATCH_SIZE
             # es_batch_size is a global variable in the current scope
 
             time.sleep(2)
