@@ -3,7 +3,10 @@ from py_utility import system
 
 RESULT_LOG_BaseName = r"log/result"
 CLUSTERS_LOG_BaseName = r"log/clusters"
-times_to_update = [{"hour": 10, "min": 18}, {"hour": 16, "min": 27}]
+times_to_update = [
+    {"hour": 10, "min": 18},
+    {"hour": 16, "min": 27}
+]
 es_url = ""
 es_tank_timeout = 10
 es_batch_size = 300

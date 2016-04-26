@@ -5,15 +5,16 @@ from lib_tank_recommender import url_filter
 from lib_tank_recommender import hot_news_selector
 from es_driver import fetch_news_from_es
 from lib_tank_recommender import DerivativeClustering
-from lib_tank_recommender import make_debug_times_to_update
 from mysql_updater_baseClass import MySQLUpdater
-from py_utility.system import write_content
-from py_utility.system import create_abs_path
+from waffle.system import f_write
+from waffle.system import create_abs_path
 from config import RESULT_LOG_BaseName
 from config import CLUSTERS_LOG_BaseName
 from config import get_log_file_pth
 from config import UPDATE_TIME_POINT
 from config import FILE_WHITE_LIST
+from config import DEBUG_BT
+from config import DEBUG_ET
 import json
 import time
 
@@ -29,12 +30,10 @@ class HotNewsDiscoverAgent(object):
         self.debug = debug
 
     def update_db_when_time_is_right(self):
-        if self.debug:
-            debug_times_to_update = make_debug_times_to_update()
-            result = self.time_match(debug_times_to_update)
-        else:
-            result = self.time_match(self.times_to_update)
+        result = self.time_match(self.times_to_update)
 
+        if self.debug:
+            self.update_db(DEBUG_BT, DEBUG_ET)
         if result:
             bt, et = self.get_bt_et(result)
             self.update_db(bt, et)
@@ -103,7 +102,8 @@ class HotNewsDiscoverAgent(object):
 
         title_result = list()
         for item in item_obj:
-            num = query_search_result(item["title"])
+            # num = query_search_result(item["title"])
+            num = 1
             if num:
                 # if num is not None, push data to title_result
                 title_result.append({"title": item["title"], "content": item["content"],
@@ -124,12 +124,12 @@ class HotNewsDiscoverAgent(object):
         test_str = "\n\n".join(test_buffer)
 
         test_result_pth = get_log_file_pth(RESULT_LOG_BaseName)
-        write_content(test_result_pth, test_str)
+        f_write(test_result_pth, test_str)
         hot_news_and_kws = hot_news_selector(clusters)
 
         mysql_updater = MySQLUpdater()
         for item in hot_news_and_kws:
-            query_msg = mysql_updater.query(item)
+            mysql_updater.query(item)
         mysql_updater.clean_up()
         print("Db Updated !")
         print("\n")
@@ -141,11 +141,10 @@ class HotNewsDiscoverAgent(object):
 
         test_clusters_pth = get_log_file_pth(CLUSTERS_LOG_BaseName)
         json_str = json.dumps(clusters, ensure_ascii=False)
-        write_content(test_clusters_pth, json_str)
+        f_write(test_clusters_pth, json_str)
         return 0
 
 
 if __name__ == "__main__":
-    agent = HotNewsDiscoverAgent(UPDATE_TIME_POINT, debug=False)
-    # TODO: Dubug the "debug" model implementation
+    agent = HotNewsDiscoverAgent(UPDATE_TIME_POINT, debug=True)
     agent.run()

@@ -8,6 +8,7 @@ import requests
 import pynlpir
 import json
 import re
+import copy
 
 
 def white_list_test(url, white_list):
@@ -26,13 +27,6 @@ def url_filter(json_obj, white_list_file):
         if white_list_test(item["Url"], white_list_file):
             filted_dataset.append({"title": item["Title"], "content": item["Content"], "iG": item["iG"]})
     return filted_dataset
-
-
-def make_debug_times_to_update():
-    ct = time.localtime()
-    hour = ct.tm_hour
-    min = ct.tm_min
-    return [{"hour": 2, "min": 35}, {"hour": hour, "min": min}]
 
 
 def query_search_result(_news_title):

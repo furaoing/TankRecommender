@@ -7,7 +7,7 @@ Created on Mon Jun 29 11:48:16 2015
 
 import json
 import requests
-from py_utility import system
+from waffle import system
 import time
 from config import ES_URL
 from config import construct_query
@@ -20,7 +20,10 @@ def pull_news_from_tank(_start_index, _batch_size, bt, et):
     signal = None
     url = ES_URL
     query = construct_query(bt, et, _start_index, _batch_size)
+    timer = system.Timer()
     r = requests.post(url, data=json.dumps(query), timeout=ES_TANK_TIMEOUT)
+    t = str(timer.end())
+    print("ES Query Time: " + t)
     obj = json.loads(r.text)
     batch_size = len(obj["hits"]["hits"])
     if batch_size < _batch_size:

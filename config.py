@@ -8,14 +8,18 @@ from sqlalchemy.ext.declarative import declarative_base
 
 UPDATE_TIME_POINT = [
     {
-        "hour": 9,
-        "min": 34
+        "hour": 13,
+        "min": 31
     },
     {
         "hour": 16,
         "min": 27
     }
 ]
+
+
+DEBUG_BT = "2016-4-26T10:27:33+08:00"
+DEBUG_ET = "2016-4-26T13:31:33+08:00"
 
 """ External File and Logging File Relative Path """
 
@@ -47,16 +51,16 @@ Base = declarative_base()
 
 
 class HeatTopic(Base):
-        # 表名称字符串
-        __tablename__ = "HeatTopic"
+    # 表名称字符串
+    __tablename__ = "HeatTopic"
 
-        # 字段定义
-        HeatTopicID = Column(VARCHAR(32), primary_key=True, nullable=False)
-        HeatTopicName = Column(VARCHAR(100), default=None, nullable=True)
-        IssueID = Column(VARCHAR(32), default=None, nullable=True)
-        QueryRule = Column(VARCHAR(1000), default=None, nullable=True)
-        CreateTime = Column(DATETIME, default=None, nullable=True)
-        IsDisabled = Column(Binary(1), default=0, nullable=True)
+    # 字段定义
+    HeatTopicID = Column(VARCHAR(32), primary_key=True, nullable=False)
+    HeatTopicName = Column(VARCHAR(100), default=None, nullable=True)
+    IssueID = Column(VARCHAR(32), default=None, nullable=True)
+    QueryRule = Column(VARCHAR(1000), default=None, nullable=True)
+    CreateTime = Column(DATETIME, default=None, nullable=True)
+    IsDisabled = Column(Binary(1), default=0, nullable=True)
 
 
 """ ENUM Types """

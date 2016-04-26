@@ -89,12 +89,10 @@ if __name__ == "__main__":
     # 创建连接Session类
     DBSession = sessionmaker(bind=engine)
 
-
-
     # 由Session类实例化一个session
     session = DBSession()
     topic = HeatTopic(HeatTopicID="111",
-                              HeatTopicName="111",
+                      HeatTopicName="111",
                               IssueID="Reader",
                               QueryRule="111",
                               )
