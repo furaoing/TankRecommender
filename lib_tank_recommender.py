@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from py_utility.system import get_content_list
-from extract_news_kws_lib import extract_news_kws
 from nlp_client import rpc_seg
 from config import CONNECTION
 import time
@@ -137,13 +136,12 @@ class DerivativeClustering:
 
 
 def extract_news_kws(hot_news):
-    pynlpir.open()
     s = hot_news
-    kw_list = pynlpir.segment(s, pos_tagging=True, pos_names=None)
+    kw_list = rpc_seg(s)
     kws = ""
     for kw in kw_list:
-        pos = kw[0]
-        tagging = kw[1]
+        pos = kw["word"]
+        tagging = kw["nature"]
         try:
             if tagging:
                 # test if tagging is none, which means the pos is a space character
@@ -152,7 +150,7 @@ def extract_news_kws(hot_news):
                 tagging_first = ""
         except:
             tagging_first = ""
-        if (tagging_first in "nsfvaz") and len(pos) > 1:
+        if tagging_first == "n" and len(pos) > 1:
             if pos != "quot":
                 kws = kws + pos + u" "
     kws = kws.strip(u" ")

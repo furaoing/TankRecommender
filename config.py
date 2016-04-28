@@ -19,7 +19,7 @@ UPDATE_TIME_POINT = [
 
 
 DEBUG_BT = "2016-4-26T10:27:33+08:00"
-DEBUG_ET = "2016-4-26T13:31:33+08:00"
+DEBUG_ET = "2016-4-26T11:31:33+08:00"
 
 """ External File and Logging File Relative Path """
 
@@ -82,7 +82,7 @@ class CONNECTION(object):
 
 def get_log_file_pth(base_name):
     t = TimeFormater("es")
-    time_date = t.format_time()
+    time_date = t.format_time_as_fn()
 
     relative_pth = base_name + time_date
     abs_path = system.create_abs_path(relative_pth)
