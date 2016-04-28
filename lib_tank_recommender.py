@@ -2,6 +2,7 @@
 
 from py_utility.system import get_content_list
 from extract_news_kws_lib import extract_news_kws
+from nlp_client import rpc_seg
 from config import CONNECTION
 import time
 import requests
@@ -9,6 +10,7 @@ import pynlpir
 import json
 import re
 import copy
+
 
 
 def white_list_test(url, white_list):
@@ -160,13 +162,11 @@ def extract_news_kws(hot_news):
 class TfParser(object):
     def __init__(self, content, norm="l1_norm"):
         self.norm = norm
-        pynlpir.open()
-        words = pynlpir.segment(content, pos_tagging=True, pos_names=None)
-
+        words = rpc_seg(content)
         kws = ""
         for word in words:
-            pos = word[0]
-            tagging = word[1]
+            pos = word["word"]
+            tagging = word["nature"]
             try:
                 if tagging:
                     # test if tagging is none, which means the pos is a space character
