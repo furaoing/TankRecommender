@@ -43,9 +43,12 @@ class HotNewsDiscoverAgent(object):
 
     def run(self):
         while True:
-            return_code = self.update_db_when_time_is_right()
-            if return_code == 0:
-                time.sleep(61)
+            try:
+                return_code = self.update_db_when_time_is_right()
+                if return_code == 0:
+                    time.sleep(61)
+            except Exception as e:
+                pass
             time.sleep(1)
 
     def time_match(self, times):
@@ -146,5 +149,5 @@ class HotNewsDiscoverAgent(object):
 
 
 if __name__ == "__main__":
-    agent = HotNewsDiscoverAgent(UPDATE_TIME_POINT, debug=True)
+    agent = HotNewsDiscoverAgent(UPDATE_TIME_POINT, debug=False)
     agent.run()
