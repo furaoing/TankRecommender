@@ -47,6 +47,11 @@ DB_TYPE = "mysql"
 DB_CONNECTOR = "pymysql"
 DB_CHARSET = "utf8"
 
+""" Dependence Service Info """
+
+HANLPRPC_HOST = "127.0.0.1"
+HANLPRPC_PORT = 6681
+
 """ MySQL Table Structure """
 
 # 创建数据表结构的基类:
