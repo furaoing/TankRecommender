@@ -36,8 +36,8 @@ def pull_news_from_tank(_start_index, _batch_size, bt, et):
     query = construct_query(bt, et, _start_index, _batch_size)
     timer = system.Timer()
     response = es_fetch(query)
-    time_used = str(timer.end())
-    print("ES Query Time: " + time_used)
+    time_elapsed = str(timer.end())
+    print("ES Query Time: " + time_elapsed)
     obj = json.loads(response.text)
     batch_size = len(obj["hits"]["hits"])
     if batch_size < _batch_size:
@@ -88,8 +88,8 @@ def fetch_news_from_es(bt, et):
 
             news = news + news_buffer
             start_index += ES_BATCH_SIZE
-            time.sleep(5)
-            # sleep for 2 sec and then fetch the next batch
+            time.sleep(1)
+            # sleep for 1 sec and then fetch the next batch
         else:
             print("Error, var signal is assigned illegal value")
             raise Exception

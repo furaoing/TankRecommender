@@ -16,6 +16,7 @@ from config import FILE_WHITE_LIST
 from config import DEBUG_BT
 from config import DEBUG_ET
 from config import is_debug
+import traceback
 import json
 import time
 
@@ -49,7 +50,7 @@ class HotNewsDiscoverAgent(object):
                 if return_code == 0:
                     time.sleep(61)
             except Exception as e:
-                pass
+                traceback.print_exc()
             time.sleep(1)
 
     def time_match(self, times):
