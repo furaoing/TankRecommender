@@ -4,6 +4,11 @@ from waffle import system
 from sqlalchemy import create_engine, Column, VARCHAR, DATETIME, Binary
 from sqlalchemy.ext.declarative import declarative_base
 
+""" Execution Mode """
+
+is_debug = True
+
+
 """ Timer Setting """
 
 UPDATE_TIME_POINT = [

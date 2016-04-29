@@ -15,6 +15,7 @@ from config import UPDATE_TIME_POINT
 from config import FILE_WHITE_LIST
 from config import DEBUG_BT
 from config import DEBUG_ET
+from config import is_debug
 import json
 import time
 
@@ -149,5 +150,5 @@ class HotNewsDiscoverAgent(object):
 
 
 if __name__ == "__main__":
-    agent = HotNewsDiscoverAgent(UPDATE_TIME_POINT, debug=False)
+    agent = HotNewsDiscoverAgent(UPDATE_TIME_POINT, debug=is_debug)
     agent.run()
