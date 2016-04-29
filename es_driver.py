@@ -35,10 +35,10 @@ def pull_news_from_tank(_start_index, _batch_size, bt, et):
     news = list()
     query = construct_query(bt, et, _start_index, _batch_size)
     timer = system.Timer()
-    r = es_fetch(query)
-    t = str(timer.end())
-    print("ES Query Time: " + t)
-    obj = json.loads(r.text)
+    response = es_fetch(query)
+    time_used = str(timer.end())
+    print("ES Query Time: " + time_used)
+    obj = json.loads(response.text)
     batch_size = len(obj["hits"]["hits"])
     if batch_size < _batch_size:
         signal = ERROR.ES_NO_MORE_DATA
@@ -75,30 +75,23 @@ def fetch_news_from_es(bt, et):
 
     while True:
         # starting fetching data from es on a batch by batch style
-        try:
-            signal, news_buffer = pull_news_from_tank(start_index,
-                                                      ES_BATCH_SIZE, bt, et)
 
-            if signal is None:
-                # Terminate execuation if signal is None
-                print("Error, var signal is not assigned value")
-                raise Exception
+        signal, news_buffer = pull_news_from_tank(start_index,
+                                                  ES_BATCH_SIZE, bt, et)
 
-            if signal == ERROR.ES_NO_MORE_DATA:
-                break
-                # no more batches based on query
-            elif signal == ERROR.ES_HAS_DATA:
-                print("Batch Arrived")
-
-                news = news + news_buffer
-                start_index += ES_BATCH_SIZE
-                time.sleep(2)
-                # sleep for 2 sec and then fetch the next batch
-            else:
-                print("Error, var signal is assigned illegal value")
-                raise Exception
-
-        except Exception:
-            print("Retries failed, break out of loop, drop ES connection attempts")
+        if signal == ERROR.ES_NO_MORE_DATA:
+            print("ES No More Data")
             break
+            # no more batches based on query
+        elif signal == ERROR.ES_HAS_DATA:
+            print("Batch Arrived")
+
+            news = news + news_buffer
+            start_index += ES_BATCH_SIZE
+            time.sleep(5)
+            # sleep for 2 sec and then fetch the next batch
+        else:
+            print("Error, var signal is assigned illegal value")
+            raise Exception
+
     return news
