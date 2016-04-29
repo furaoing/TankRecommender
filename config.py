@@ -49,7 +49,7 @@ DB_CHARSET = "utf8"
 
 """ Dependence Service Info """
 
-HANLPRPC_HOST = "127.0.0.1"
+HANLPRPC_HOST = "180.153.146.61"
 HANLPRPC_PORT = 6681
 
 """ MySQL Table Structure """
