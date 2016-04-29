@@ -8,8 +8,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 UPDATE_TIME_POINT = [
     {
-        "hour": 13,
-        "min": 31
+        "hour": 9,
+        "min": 30
     },
     {
         "hour": 16,
