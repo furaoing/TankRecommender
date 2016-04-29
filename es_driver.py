@@ -72,7 +72,8 @@ def fetch_news_from_es(bt, et):
             try:
                 signal, news_buffer = pull_news_from_tank(start_index,
                                                           ES_BATCH_SIZE, bt, et)
-            except:
+                time.sleep(1)
+            except Exception:
                 print("Time Out")
                 print("Try One More Time")
                 time.sleep(5)
@@ -83,6 +84,7 @@ def fetch_news_from_es(bt, et):
 
                 continue
                 # move to the next attempt
+            time.sleep(0.1)
             break
 
         if signal is None:
