@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from py_utility.system import get_content_list
+from waffle import system
 from nlp_client import rpc_seg
 from config import CONNECTION
 import time
 import requests
-import pynlpir
 import json
 import re
-import copy
-
 
 
 def white_list_test(url, white_list):
-    white_list = get_content_list(white_list)
+    white_list = system.f_read(white_list, readlines=True)
     flag = False
     for white_url in white_list:
         if url.find(white_url) > -1:
